@@ -1,0 +1,7 @@
+_sourceCategory=prod/api
+| where requestPath = "/api/data"
+| parse "responseTime=*ms" as responseTime
+| where responseTime > 3000
+| timeslice 10m
+| count as slow_requests by _timeslice
+| where slow_requests > 5
